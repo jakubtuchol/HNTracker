@@ -3,7 +3,7 @@ import requests
 def get_hn():
   resp = requests.get('http://news.ycombinator.com')
   if resp.status_code == 200:
-    print(resp)
+    resp_string = resp.content.decode('utf-8')
   else:
     print('Cannot connect to hacker news')
 
