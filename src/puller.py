@@ -1,13 +1,13 @@
 import requests
 
-def construct_call(search_term=None, tags=None):
+def construct_call(search_terms=None, tags=None):
   '''
   Given search terms and tags, constructs url to
   be called
   '''
   # using algolia hacker news api
   base_url = 'http://hn.algolia.com/api/v1/'
-  params = 'search?query={term}'
+  params = 'search?query={term}'.format(term=search_terms[0])
 
   # handling tags present
   if tags is not None and len(tags) > 0:
@@ -25,6 +25,7 @@ def call_api(url):
   '''
   resp = requests.get(url)
   if resp.status_code == 200:
+    json_resp = resp.json()
     if json_resp['nbHits'] == 0:
       return 0
     else:
