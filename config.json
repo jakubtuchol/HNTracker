@@ -1,0 +1,13 @@
+{
+  'terms':
+    [
+      'haskell',
+      'node.js',
+      'ocaml'
+    ],
+  'tags':
+    [
+      'story',
+      'front_page'
+    ]
+}

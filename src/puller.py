@@ -1,4 +1,5 @@
 import requests
+import os.path
 
 def construct_call(search_terms=None, tags=None):
   '''
@@ -44,3 +45,15 @@ def call_api(url):
       return json_resp['nbHits']
   else:
     return -1
+
+def run_api(filepath):
+  # check if file exists
+  if not os.path.isfile(filepath):
+    raise OSError('config file not found')
+
+  with open(filepath, 'r') as conf_file:
+    conf_json = json.loads(conf_file)
+    terms = conf_json['terms']
+    tags = conf_json['tags']
+    api_url = construct_call(search_terms=terms, tags=tags)
+    json_ret = call_api(api_url)
