@@ -14,7 +14,7 @@ class QueryTest(unittest.TestCase):
     self.assertEqual(puller.construct_call(search_terms=terms), exp_return)
   def test_basic_search(self):
     exp_return = 'http://hn.algolia.com/api/v1/search?query=haskell'
-    self.assertEqual(puller.construct_call('haskell'), exp_return )
+    self.assertEqual(puller.construct_call(['haskell']), exp_return )
 
 class APITest(unittest.TestCase):
   def test_basic_query(self):

@@ -11,7 +11,14 @@ def construct_call(search_terms=None, tags=None):
 
   # using algolia hacker news api
   base_url = 'http://hn.algolia.com/api/v1/'
-  params = 'search?query={term}'.format(term=search_terms[0])
+  params = ''
+
+  if search_terms is not None and len(search_terms) > 0:
+    if len(search_terms) == 1:
+      params += 'search?query={term}'.format(term=search_terms[0])
+    else:
+      search_str = ','.join(search_terms)
+      params += 'search?query=({term})'.format(term=search_str)
 
   # handling tags present
   if tags is not None and len(tags) > 0:
@@ -30,6 +37,7 @@ def call_api(url):
   resp = requests.get(url)
   if resp.status_code == 200:
     json_resp = resp.json()
+    resp.connection.close()
     if json_resp['nbHits'] == 0:
       return 0
     else:
