@@ -5,6 +5,10 @@ def construct_call(search_terms=None, tags=None):
   Given search terms and tags, constructs url to
   be called
   '''
+  # checking that at least one argument is provided
+  if search_terms is None and tags is None:
+    raise Exception('No arguments supplied')
+
   # using algolia hacker news api
   base_url = 'http://hn.algolia.com/api/v1/'
   params = 'search?query={term}'.format(term=search_terms[0])
