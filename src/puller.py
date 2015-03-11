@@ -1,59 +1,73 @@
 import requests
 import os.path
+import logging
 
-def construct_call(search_terms=None, tags=None):
-  '''
-  Given search terms and tags, constructs url to
-  be called
-  '''
-  # checking that at least one argument is provided
-  if search_terms is None and tags is None:
-    raise Exception('No arguments supplied')
+class HNCaller(object):
+  def __init__(self, filepath):
+    # setting up log
+    logging.basicConfig(filename='/var/log/hntracker.log',
+                        level=logging.INFO
+                        format='%(asctime)s %(message)s')
+    self.logger = logging.getLogger(__name__)
+    self.logger.debug('Setting up log...')
+    
+    # check if file exists
+    if not os.path.isfile(filepath):
+      raise OSError('config file not found')
+    
+    with open(filepath, 'r') as conf_file:
+      try:
+        self.conf_json = json.loads(conf_file)
+        self.logger.debug('successfully loaded json config')
+      except ValueError:
+        self.logger.error('malformed json config, exiting program...')
+        sys.exit(1)
 
-  # using algolia hacker news api
-  base_url = 'http://hn.algolia.com/api/v1/'
-  params = ''
+      self.terms = conf_json['terms']
+      #self.tags = conf_json['tags']
 
-  if search_terms is not None and len(search_terms) > 0:
-    if len(search_terms) == 1:
-      params += 'search?query={term}'.format(term=search_terms[0])
+  def construct_call(self, search_terms=None, tags=None):
+    '''
+    Given search terms and tags, constructs url to
+    be called
+    '''
+    # checking that at least one argument is provided
+    if search_terms is None and tags is None:
+      raise Exception('No arguments supplied')
+
+    # using algolia hacker news api
+    base_url = 'http://hn.algolia.com/api/v1/'
+    params = ''
+
+    if search_terms is not None and len(search_terms) > 0:
+      if len(search_terms) == 1:
+        params += 'search?query={term}'.format(term=search_terms[0])
+      else:
+        search_str = ','.join(search_terms)
+        params += 'search?query=({term})'.format(term=search_str)
+
+    # handling tags present
+    if tags is not None and len(tags) > 0:
+      if len(tags) == 1:
+        params += '&tags={tag}'.format(tag=tags[0])
+      else:
+        tag_str = ','.join(tags)
+        params += '&tags=({tag})'.format(tag=tag_str)
+    
+    return base_url + params
+
+  def call_api(url):
+    '''
+    Given url, executes api call and evaluates return
+    '''
+    resp = requests.get(url)
+    if resp.status_code == 200:
+      json_resp = resp.json()
+      resp.connection.close()
+      if json_resp['nbHits'] == 0:
+        logger.info('no hits found')
+        return None
+      else:
+        return json_resp['nbHits']
     else:
-      search_str = ','.join(search_terms)
-      params += 'search?query=({term})'.format(term=search_str)
-
-  # handling tags present
-  if tags is not None and len(tags) > 0:
-    if len(tags) == 1:
-      params += '&tags={tag}'.format(tag=tags[0])
-    else:
-      tag_str = ','.join(tags)
-      params += '&tags=({tag})'.format(tag=tag_str)
-  
-  return base_url + params
-
-def call_api(url):
-  '''
-  Given url, executes api call and evaluates return
-  '''
-  resp = requests.get(url)
-  if resp.status_code == 200:
-    json_resp = resp.json()
-    resp.connection.close()
-    if json_resp['nbHits'] == 0:
-      return 0
-    else:
-      return json_resp['nbHits']
-  else:
-    return -1
-
-def run_api(filepath):
-  # check if file exists
-  if not os.path.isfile(filepath):
-    raise OSError('config file not found')
-
-  with open(filepath, 'r') as conf_file:
-    conf_json = json.loads(conf_file)
-    terms = conf_json['terms']
-    tags = conf_json['tags']
-    api_url = construct_call(search_terms=terms, tags=tags)
-    json_ret = call_api(api_url)
+      return resp.status_code
