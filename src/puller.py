@@ -1,26 +1,24 @@
 import requests
 import os.path
 import logging
+import sys
 
 class HNCaller(object):
-  def __init__(self, filepath):
-    # setting up log
-    logging.basicConfig(filename='/var/log/hntracker.log',
-                        level=logging.INFO
-                        format='%(asctime)s %(message)s')
-    self.logger = logging.getLogger(__name__)
-    self.logger.debug('Setting up log...')
+  def __init__(self, filepath, logger):
+    self.logger = logger
+    self.logger.debug('initializing api caller class...')
     
     # check if file exists
     if not os.path.isfile(filepath):
-      raise OSError('config file not found')
+      self.logger.error('config file not found. exiting program...')
+      sys.exit(1)
     
     with open(filepath, 'r') as conf_file:
       try:
-        self.conf_json = json.loads(conf_file)
+        conf_json = json.loads(conf_file)
         self.logger.debug('successfully loaded json config')
       except ValueError:
-        self.logger.error('malformed json config, exiting program...')
+        self.logger.error('malformed json config. exiting program...')
         sys.exit(1)
 
       self.terms = conf_json['terms']
@@ -71,3 +69,13 @@ class HNCaller(object):
         return json_resp['nbHits']
     else:
       return resp.status_code
+
+def main():
+  # setting up log
+  logging.basicConfig(filename='/var/log/hntracker.log',
+                      level=logging.INFO
+                      format='%(asctime)s %(message)s')
+  logging.getLogger(__name__)
+  
+if __name__ == '__main__':
+  main()
