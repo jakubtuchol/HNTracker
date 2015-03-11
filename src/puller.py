@@ -15,13 +15,17 @@ class HNCaller(object):
     
     with open(filepath, 'r') as conf_file:
       try:
-        conf_json = json.loads(conf_file)
+        conf_json = json.loads(conf_file.read())
         self.logger.debug('successfully loaded json config')
       except ValueError:
         self.logger.error('malformed json config. exiting program...')
         sys.exit(1)
 
-      self.terms = conf_json['terms']
+      # check if terms key in json configuration
+      if terms in conf_json:
+        self.terms = conf_json['terms']
+      else:
+        log.info('no search terms provided')
       #self.tags = conf_json['tags']
 
   def construct_call(self, search_terms=None, tags=None):
@@ -63,19 +67,23 @@ class HNCaller(object):
       json_resp = resp.json()
       resp.connection.close()
       if json_resp['nbHits'] == 0:
-        logger.info('no hits found')
+        self.logger.info('no hits found')
         return None
       else:
         return json_resp['nbHits']
     else:
-      return resp.status_code
+      self.logger.error('hacker news api returning non-200 response')
+      return None
 
 def main():
+  filepath = sys.argv[1] # figure out a less sloppy way of doing this
   # setting up log
   logging.basicConfig(filename='/var/log/hntracker.log',
                       level=logging.INFO
                       format='%(asctime)s %(message)s')
   logging.getLogger(__name__)
+  api_caller = HNCaller(filepath, logger)
+  
   
 if __name__ == '__main__':
   main()
