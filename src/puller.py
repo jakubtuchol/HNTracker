@@ -1,32 +1,20 @@
 import requests
 import os.path
-import logging
 import sys
+import helper
 
 class HNCaller(object):
-  def __init__(self, filepath, logger):
+  def __init__(self, conf_path, logger):
     self.logger = logger
     self.logger.debug('initializing api caller class...')
     
-    # check if file exists
-    if not os.path.isfile(filepath):
-      self.logger.error('config file not found. exiting program...')
-      sys.exit(1)
-    
-    with open(filepath, 'r') as conf_file:
-      try:
-        conf_json = json.loads(conf_file.read())
-        self.logger.debug('successfully loaded json config')
-      except ValueError:
-        self.logger.error('malformed json config. exiting program...')
-        sys.exit(1)
+    conf_json = helper.load_json(conf_path, self.logger)
 
-      # check if terms key in json configuration
-      if terms in conf_json:
-        self.terms = conf_json['terms']
-      else:
-        log.info('no search terms provided')
-      #self.tags = conf_json['tags']
+    # check if terms key in json configuration
+    if terms in conf_json:
+      self.terms = conf_json['terms']
+    else:
+      self.loggger.info('no search terms provided')
 
   def construct_call(self, search_terms=None, tags=None):
     '''
