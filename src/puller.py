@@ -1,6 +1,4 @@
 import requests
-import os.path
-import sys
 import helper
 
 class HNCaller(object):
@@ -47,9 +45,7 @@ class HNCaller(object):
     return base_url + params
 
   def call_api(url):
-    '''
-    Given url, executes api call and evaluates return
-    '''
+    
     resp = requests.get(url)
     if resp.status_code == 200:
       json_resp = resp.json()
@@ -71,8 +67,3 @@ def main():
                       format='%(asctime)s %(message)s')
   logging.getLogger(__name__)
   api_caller = HNCaller(filepath, logger)
-  
-  
-  
-if __name__ == '__main__':
-  main()
