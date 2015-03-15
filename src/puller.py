@@ -47,16 +47,13 @@ class HNCaller(object):
     resp = helper.call_api(url, self.logger)
     if resp['nbHits'] == 0:
       self.logger.info('no hits found')
-      
-    resp = requests.get(url)
-    if resp.status_code == 200:
-      json_resp = resp.json()
-      resp.connection.close()
-      if json_resp['nbHits'] == 0:
-        self.logger.info()
-        return None
-      else:
-        return json_resp['nbHits']
-    else:
-      self.logger.error('hacker news api returning non-200 response')
-      return None
+      return
+    stories = []
+    for elem in resp:
+      story = {
+        'date':  elem['date'],
+        'title': elem['title'],
+        'url':   elem['url']
+      }
+      stories.append(story)
+    return stories
