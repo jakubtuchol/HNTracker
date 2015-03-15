@@ -10,14 +10,11 @@ class HNSaver(object):
     if 'location' not in conf_json.keys():
       helper.fatal('no location for save file specified')
 
-    savefile = conf_json['location']
+    self.savefile = conf_json['location']
 
-    # setting file mode to write/append depending
-    # on whether or not it exists
-    if os.path.isfile(savefile):
-      filemode = 'a'
-    else:
-      filemode = 'w'
+    if not os.path.isfile(self.savefile):
+      with open(self.savefile, 'w') as save:
+        save.write('date,title,url\n')
 
   def save_story(url):
     pass
