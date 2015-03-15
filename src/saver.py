@@ -6,12 +6,18 @@ class HNSaver(object):
     self.logger.debug('initializing saver class...')
 
     conf_json = helper.load_json(conf_path, self.logger)
-    if 'consumer_key' not in conf_json:
-      self.logger.error('consumer_key tag not in auth file, cannot access pocket api')
-      self.logger.error('exiting program')
-      sys.exit(1)
-      
-    self.cons_key = conf_json['consumer_key']
+
+    if 'location' not in conf_json.keys():
+      helper.fatal('no location for save file specified')
+
+    savefile = conf_json['location']
+
+    # setting file mode to write/append depending
+    # on whether or not it exists
+    if os.path.isfile(savefile):
+      filemode = 'a'
+    else:
+      filemode = 'w'
 
   def save_story(url):
     pass
