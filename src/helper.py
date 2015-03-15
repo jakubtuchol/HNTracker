@@ -24,10 +24,12 @@ def call_api(url, logger):
   resp = requests.get(url)
   if resp.status_code == 200:
     logger.debug('successful api call: 200 response')
+    resp.connection.close() # necessary?
     return resp.json()
   else:
     logger.error('api returning non-200 response')
-    logger.error('returning {} reponse for call to {}'.format(str(response.status_code), url))
+    logger.error('returning {} reponse for call to {}'.format(str(resp.status_code), url))
+    resp.connection.close() # necessary?
     return None
 
 def err_exit(message, logger):

@@ -1,4 +1,3 @@
-import requests
 import helper
 
 class HNCaller(object):
@@ -44,14 +43,17 @@ class HNCaller(object):
     
     return base_url + params
 
-  def call_api(url):
-    
+  def process_call(url):
+    resp = helper.call_api(url, self.logger)
+    if resp['nbHits'] == 0:
+      self.logger.info('no hits found')
+      
     resp = requests.get(url)
     if resp.status_code == 200:
       json_resp = resp.json()
       resp.connection.close()
       if json_resp['nbHits'] == 0:
-        self.logger.info('no hits found')
+        self.logger.info()
         return None
       else:
         return json_resp['nbHits']
