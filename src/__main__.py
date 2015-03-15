@@ -26,15 +26,17 @@ if __name__ == '__main__':
   if args.log is not None:
     logfile = args.log
   else:
-    logfile = '/var/log/hntracker.log'
-
-  # checking if conf is present
-  if auth.conf is None:
-    helper.fatal('no configuraton file set')
-
+    #logfile = '/var/log/hntracker.log'
+    logfile = './hntracker.log'
+  
   # setting up log
   logging.basicConfig(filename=logfile, level=log_level, 
                       format='%(asctime)s %(message)s')
 
   logger = logging.getLogger(__name__)
+
+  # checking if conf is present
+  if args.conf is None:
+    helper.fatal('no configuraton file set', logger)
+
   api_caller = HNCaller(auth.conf, logger)

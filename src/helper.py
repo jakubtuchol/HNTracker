@@ -32,6 +32,6 @@ def call_api(url, logger):
     resp.connection.close() # necessary?
     return None
 
-def err_exit(message, logger):
+def fatal(message, logger):
   logger.error(message)
   sys.exit(1)
