@@ -27,7 +27,7 @@ def call_api(url, logger):
     return resp.json()
   else:
     logger.error('api returning non-200 response')
-    logger.error('returning %{resp}d reponse for call to %{url}s'.format(resp=response.status_code, call_url=url))
+    logger.error('returning {} reponse for call to {}'.format(str(response.status_code), url))
     return None
 
 def err_exit(message, logger):

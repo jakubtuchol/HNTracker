@@ -29,18 +29,18 @@ class HNCaller(object):
 
     if search_terms is not None and len(search_terms) > 0:
       if len(search_terms) == 1:
-        params += 'search?query={term}'.format(term=search_terms[0])
+        params += 'search?query={}'.format(search_terms[0])
       else:
         search_str = ','.join(search_terms)
-        params += 'search?query=({term})'.format(term=search_str)
+        params += 'search?query=({})'.format(search_str)
 
     # handling tags present
     if tags is not None and len(tags) > 0:
       if len(tags) == 1:
-        params += '&tags={tag}'.format(tag=tags[0])
+        params += '&tags={}'.format(tags[0])
       else:
         tag_str = ','.join(tags)
-        params += '&tags=({tag})'.format(tag=tag_str)
+        params += '&tags=({})'.format(tag_str)
     
     return base_url + params
 
