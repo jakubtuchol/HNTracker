@@ -58,12 +58,3 @@ class HNCaller(object):
     else:
       self.logger.error('hacker news api returning non-200 response')
       return None
-
-def main():
-  filepath = sys.argv[1] # figure out a less sloppy way of doing this
-  # setting up log
-  logging.basicConfig(filename='/var/log/hntracker.log',
-                      level=logging.INFO
-                      format='%(asctime)s %(message)s')
-  logging.getLogger(__name__)
-  api_caller = HNCaller(filepath, logger)

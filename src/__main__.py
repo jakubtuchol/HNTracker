@@ -1,14 +1,20 @@
 import argparse
 import logging
+import helper
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('-v', '--verbose', 
                       help='increase logging verbosity',
                       action='store_true')
+  parser.add_argument('-c', '--conf',
+                      help='configuration file for HN api')
+  parser.add_argument('-a', '--auth',
+                      help-'authorization credentials for pocket api')
+
   args = parser.parse_args()
 
-  filepath = sys.argv[1] # figure out a less sloppy way of doing this
+  print(args.verbose)
   # setting up log
   logging.basicConfig(filename='/var/log/hntracker.log',
                       level=logging.INFO
