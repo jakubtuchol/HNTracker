@@ -16,5 +16,16 @@ class HNSaver(object):
       with open(self.savefile, 'w') as save:
         save.write('date,title,url\n')
 
-  def save_story(url):
-    pass
+  def save_story(story):
+    with open(self.savefile, 'a') as save:
+      save.write('{},{},{}\n'.format(story['date'],
+                                     story['title'],
+                                     story['url']))
+
+  def batch_save(stories):
+    with open(self.savefile, 'a') as save:
+      for story in stories:
+        save.write('{},{},{}\n'.format(story['date'],
+                                       story['title'],
+                                       story['url']))
+
