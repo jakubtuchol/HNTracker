@@ -12,7 +12,7 @@ class HNCaller(object):
     if terms in conf_json:
       self.terms = conf_json['terms']
     else:
-      self.loggger.info('no search terms provided')
+      self.logger.info('no search terms provided')
 
   def construct_call(self, search_terms=None, tags=None):
     '''
