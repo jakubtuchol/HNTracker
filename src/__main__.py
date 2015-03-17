@@ -1,6 +1,7 @@
 import argparse
 import logging
 import helper
+import puller
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
@@ -39,4 +40,4 @@ if __name__ == '__main__':
   if args.conf is None:
     helper.fatal('no configuraton file set', logger)
 
-  api_caller = HNCaller(auth.conf, logger)
+  api_caller = puller.HNCaller(args.conf, logger)

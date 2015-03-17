@@ -8,7 +8,7 @@ class HNCaller(object):
     conf_json = helper.load_json(conf_path, self.logger)
 
     # check if terms key in json configuration
-    if terms in conf_json:
+    if 'terms' in conf_json:
       self.terms = conf_json['terms']
     else:
       self.logger.info('no search terms provided')
