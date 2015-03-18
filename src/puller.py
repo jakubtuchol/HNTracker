@@ -49,9 +49,10 @@ class HNCaller(object):
       self.logger.info('no hits found')
       return
     stories = []
-    for elem in resp:
+    for elem in resp['hits']:
       story = {
-        'date':  elem['date'],
+        'id':    elem['objectID'],
+        'date':  elem['created_at'],
         'title': elem['title'],
         'url':   elem['url']
       }

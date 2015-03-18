@@ -1,11 +1,5 @@
-# adding src directory to path
-import sys, os
-testdir = os.path.dirname(__file__)
-srcdir = '../src'
-sys.path.insert(0, os.path.abspath(os.path.join(testdir, srcdir)))
-
 import unittest
-import puller
+import src.puller as puller
 
 class QueryTest(unittest.TestCase):
   def test_multiple_terms(self):
