@@ -1,7 +1,7 @@
 import sys
 import os.path
 import json
-
+import requests
 
 def load_json(filepath, logger):
   # check if file exists
@@ -16,7 +16,7 @@ def load_json(filepath, logger):
       return conf_json
     except ValueError:
       logger.error('malformed json config: {}'.format(filepath))
-      raise ValueError('malformed json config {}'.format(filepath))
+      raise ValueError
 
 def call_api(url, logger):
   '''
