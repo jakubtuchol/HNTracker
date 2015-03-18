@@ -27,7 +27,6 @@ if __name__ == '__main__':
   if args.log is not None:
     logfile = args.log
   else:
-    #logfile = '/var/log/hntracker.log'
     logfile = './hntracker.log'
   
   # setting up log
@@ -41,3 +40,6 @@ if __name__ == '__main__':
     helper.fatal('no configuraton file set', logger)
 
   api_caller = puller.HNCaller(args.conf, logger)
+
+  # cleaning up log
+  logger.close()

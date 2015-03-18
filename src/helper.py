@@ -12,11 +12,11 @@ def load_json(filepath, logger):
   with open(filepath, 'r') as conf_file:
     try:
       conf_json = json.loads(conf_file.read())
-      logger.debug('successfully loaded json config')
+      logger.debug('successfully loaded json config: {}'.format(filepath))
       return conf_json
     except ValueError:
-      logger.error('malformed json config. exiting program...')
-      sys.exit(1)
+      logger.error('malformed json config: {}'.format(filepath))
+      raise ValueError('malformed json config {}'.format(filepath))
 
 def call_api(url, logger):
   '''
