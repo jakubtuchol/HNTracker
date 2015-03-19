@@ -11,39 +11,42 @@ class HNCaller(object):
     if 'terms' in conf_json:
       self.terms = conf_json['terms']
     else:
-      self.logger.info('no search terms provided')
+      self.terms = None
+      self.logger.warning('no search terms provided in configuration')
 
-  def construct_call(self, search_terms=None, tags=None):
-    '''
-    Given search terms and tags, constructs url to
-    be called
-    '''
+    if 'tags' in conf_json:
+      self.tags = conf_json['tags']
+    else:
+      self.tags = None
+      self.logger.warning('no tags provided in configuration')
+
+  def construct_call(self):
     # checking that at least one argument is provided
-    if search_terms is None and tags is None:
+    if self.terms is None and self.tags is None:
       raise Exception('No arguments supplied')
 
     # using algolia hacker news api
     base_url = 'http://hn.algolia.com/api/v1/'
     params = ''
 
-    if search_terms is not None and len(search_terms) > 0:
-      if len(search_terms) == 1:
-        params += 'search?query={}'.format(search_terms[0])
+    if self.terms is not None and len(self.terms) > 0:
+      if len(self.terms) == 1:
+        params += 'search?query={}'.format(self.terms[0])
       else:
-        search_str = ','.join(search_terms)
+        search_str = ','.join(self.terms)
         params += 'search?query=({})'.format(search_str)
 
     # handling tags present
-    if tags is not None and len(tags) > 0:
-      if len(tags) == 1:
-        params += '&tags={}'.format(tags[0])
+    if self.tags is not None and len(self.tags) > 0:
+      if len(self.tags) == 1:
+        params += '&tags={}'.format(self.tags[0])
       else:
-        tag_str = ','.join(tags)
+        tag_str = ','.join(self.tags)
         params += '&tags=({})'.format(tag_str)
     
     return base_url + params
 
-  def process_call(url):
+  def process_call(self, url):
     resp = helper.call_api(url, self.logger)
     if resp['nbHits'] == 0:
       self.logger.info('no hits found')
