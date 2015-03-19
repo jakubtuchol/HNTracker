@@ -20,6 +20,6 @@ class HNSaver(object):
     with open(self.savefile, 'a') as save:
       for story in stories:
         save.write('{},{},{},{}\n'.format(story['id'],
-                                       story['date'],
-                                       story['title'],
-                                       story['url']))
+                                          story['date'],
+                                          story['title'],
+                                          story['url']))
