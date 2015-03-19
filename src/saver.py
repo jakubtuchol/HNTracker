@@ -1,4 +1,5 @@
 import os.path
+import src.helper as helper
 
 class HNSaver(object):
   def __init__(self, conf_path, logger):
@@ -16,10 +17,10 @@ class HNSaver(object):
       with open(self.savefile, 'w') as save:
         save.write('id,date,title,url\n')
 
-  def save_csv(stories):
+  def save_csv(self, stories):
     with open(self.savefile, 'a') as save:
       for story in stories:
-        save.write('{},{},{},{}\n'.format(story['id'],
+        save.write('{},{},"{}",{}\n'.format(story['id'],
                                           story['date'],
                                           story['title'],
                                           story['url']))

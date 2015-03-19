@@ -1,4 +1,4 @@
-import helper
+import src.helper as helper
 
 class HNCaller(object):
   def __init__(self, conf_path, logger):
