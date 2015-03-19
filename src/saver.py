@@ -14,7 +14,7 @@ class HNSaver(object):
 
     if not os.path.isfile(self.savefile):
       with open(self.savefile, 'w') as save:
-        save.write('date,title,url\n')
+        save.write('id,date,title,url\n')
 
   def save_csv(stories):
     with open(self.savefile, 'a') as save:
