@@ -1,0 +1,6 @@
+{
+  "terms":["haskell","node.js","ocaml"],
+  "tags": ["story","front_page"],
+  "location": "./HNStories.csv",
+  "idfile": "./saved_stories.json"  
+}
