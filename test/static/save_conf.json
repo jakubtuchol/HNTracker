@@ -1,3 +1,4 @@
 {
-    "location": "./HNStories.csv"
+    "location": "./HNStories.csv",
+    "idfile": "./saved_stories.json"
 }

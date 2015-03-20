@@ -19,10 +19,18 @@ class SaveTest(unittest.TestCase):
     self.saver.save_csv(json_file['stories'])
     self.assertTrue(self.compare_files(self.saver.savefile, self.csv_tester))
 
+  def test_save_copy(self):
+    json_file = load_json('test/static/save_test.json', self.logger)          
+    self.saver.save_csv(json_file['stories'])
+    self.saver.save_csv(json_file['stories'])
+    self.assertTrue(self.compare_files(self.saver.savefile, self.csv_tester))
+    
   def tearDown(self):
     # removing previously created savefile
     if os.path.isfile(self.saver.savefile):
       os.remove(self.saver.savefile)
+    if os.path.isfile(self.saver.idfile):
+      os.remove(self.saver.idfile)
 
   # helper method for comparing two files
   def compare_files(self, filepath1, filepath2):
