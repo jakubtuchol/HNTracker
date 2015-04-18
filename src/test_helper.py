@@ -10,8 +10,8 @@ class HelperTest(unittest.TestCase):
     self.logger = logging.getLogger(__name__)
 
     # json test files
-    self.good_json = 'test/static/good_json.json'
-    self.bad_json = 'test/static/bad_json.json'
+    self.good_json = 'src/static/good_json.json'
+    self.bad_json = 'src/static/bad_json.json'
     self.good_url = 'http://hn.algolia.com/api/v1/items/1'
     self.call_404 = 'http://hn.algolia.com/api/v1/items/:id'
     self.bad_url = 'http://algolia.com/v1/items/1'

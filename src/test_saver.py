@@ -11,16 +11,16 @@ class SaveTest(unittest.TestCase):
                         format='%(asctime)s %(message)s')
     self.logger = logging.getLogger(__name__)
 
-    self.saver = saver.HNSaver('test/static/save_conf.json', self.logger)
-    self.csv_tester = 'test/static/test_csv.csv'
+    self.saver = saver.HNSaver('src/static/save_conf.json', self.logger)
+    self.csv_tester = 'src/static/test_csv.csv'
     
   def test_save_csv(self):
-    json_file = load_json('test/static/save_test.json', self.logger)
+    json_file = load_json('src/static/save_test.json', self.logger)
     self.saver.save_csv(json_file['stories'])
     self.assertTrue(self.compare_files(self.saver.savefile, self.csv_tester))
 
   def test_save_copy(self):
-    json_file = load_json('test/static/save_test.json', self.logger)          
+    json_file = load_json('src/static/save_test.json', self.logger)          
     self.saver.save_csv(json_file['stories'])
     self.saver.save_csv(json_file['stories'])
     self.assertTrue(self.compare_files(self.saver.savefile, self.csv_tester))

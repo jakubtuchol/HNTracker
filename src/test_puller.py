@@ -9,7 +9,7 @@ class QueryTest(unittest.TestCase):
     self.logger = logging.getLogger(__name__)
 
     # generating class
-    self.caller = puller.HNCaller('test/static/conf.json', self.logger)
+    self.caller = puller.HNCaller('src/static/conf.json', self.logger)
     self.caller.construct_call()
 
   def test_setup(self):
